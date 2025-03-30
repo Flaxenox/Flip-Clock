@@ -923,6 +923,55 @@ document.querySelector(".theme8").addEventListener("click", function () {
     document.body.style.setProperty('--text', '#BEEBD2');
 });
 
+function startFlipClock() {
+    let minuteValue = 0;
+    let secondValue = 0;
+
+    function updateFlipCard(flipCardId, newValue) {
+        const flipCard = document.getElementById(flipCardId);
+        const topHalf = flipCard.querySelector(".top");
+        const bottomHalf = flipCard.querySelector(".bottom");
+
+        if (parseInt(topHalf.textContent) !== newValue) {
+            const topFlip = document.createElement("div");
+            const bottomFlip = document.createElement("div");
+
+            topFlip.classList.add("top-flip");
+            bottomFlip.classList.add("bottom-flip");
+
+            topFlip.textContent = newValue.toString().padStart(2, "0");
+            bottomFlip.textContent = newValue.toString().padStart(2, "0");
+
+            flipCard.appendChild(topFlip);
+            flipCard.appendChild(bottomFlip);
+
+            setTimeout(() => {
+                topHalf.textContent = newValue.toString().padStart(2, "0");
+                bottomHalf.textContent = newValue.toString().padStart(2, "0");
+
+                topFlip.remove();
+                bottomFlip.remove();
+            }, 700); // Animation duration
+        }
+    }
+
+    function updateClock() {
+        secondValue++;
+        if (secondValue === 60) {
+            secondValue = 0;
+            minuteValue++;
+            updateFlipCard("minutes", minuteValue);
+        }
+        updateFlipCard("seconds", secondValue);
+    }
+
+    // Start the clock
+    setInterval(updateClock, 1000);
+}
+
+// Run the clock when the page loads
+document.addEventListener("DOMContentLoaded", startFlipClock);
+
 
 
 
